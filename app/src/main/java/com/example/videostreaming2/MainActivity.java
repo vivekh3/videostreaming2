@@ -6,15 +6,16 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
+
 import java.net.Socket;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,20 +39,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class frame2video extends AsyncTask<Void,Void,Void>{
+    public class frame2video extends AsyncTask<Void,Void,Bitmap>{
 
         protected void onPreExecute(){
             imageView=(ImageView)findViewById(R.id.imview);
 
 
+
         }
-        protected Void doInBackground(Void...params){
+        protected Bitmap doInBackground(Void...params){
 
             try{
                 try{
                     s=new Socket("192.168.0.132",5000);
                     //pw=new PrintWriter(s.getOutputStream());
                     Log.d(TAG,"Connection Successful..!");
+
 
                 } catch(IOException e){
                     e.printStackTrace();
@@ -73,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
                         outputStream.flush();
                         bitmap.compress(Bitmap.CompressFormat.PNG,50,outputStream);
                         outputStream.close();
-                        imageView.setImageBitmap(bitmap);
-                        imageView.invalidate();
+                        return bitmap;
+
                     }catch(IOException e){
                         e.printStackTrace();
 
@@ -91,6 +94,11 @@ public class MainActivity extends AppCompatActivity {
             return null;
 
 
+        }
+
+        protected void onPostExecute(Bitmap bitmap){
+            imageView.setImageBitmap(bitmap);
+            imageView.invalidate();
         }
 
 
