@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
                     DataInputStream dataInputStream=new DataInputStream(s.getInputStream());
                     len=Integer.parseInt(""+dataInputStream.readInt());
                     System.out.println(len);
+                    Log.d(TAG,"Value of image length: "+len);
                     byte[] buffer=new byte[len];
                     dataInputStream.readFully(buffer,0,buffer.length);
                     try {
